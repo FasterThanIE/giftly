@@ -69,7 +69,7 @@ a { color:var(--rose); }
   border-radius: var(--radius-lg); padding: 20px 22px;
 }
 .mini.a { left: 0; top: 20px; width: 78%; transform: rotate(-2deg); }
-.mini.b { right: 0; top: 190px; width: 70%; transform: rotate(2.5deg); }
+.mini.b { right: 0; top: 190px; width: 70%; transform: rotate(2.5deg); background: var(--sage-tint); border-color: transparent; }
 .mini h3 { font-size: 20px; margin-bottom: 4px; }
 
 .row {
