@@ -1,16 +1,31 @@
 import Hero from "./components/Hero.jsx";
 import Nav from "./components/Nav.jsx";
+import HowItWorks from "./components/HowItWorks.jsx";
+import Occasions from "./components/Occasions.jsx";
+import Features from "./components/Features.jsx";
+import Cta from "./components/Cta.jsx";
+import Footer from "./components/Footer.jsx";
 
 
 function App() {
 
 
   return (
-    <div className="wrap">
-        <Nav />
-        <Hero />
+      <>
 
-    </div>
+          <div className="wrap">
+              <Nav />
+              <Hero />
+          </div>
+
+          <HowItWorks />
+          <Occasions />
+          <Features />
+          <Cta />
+          <Footer />
+
+      </>
+
   )
 }
 
