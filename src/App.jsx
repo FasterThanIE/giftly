@@ -5,6 +5,7 @@ import Occasions from "./components/Occasions.jsx";
 import Features from "./components/Features.jsx";
 import Cta from "./components/Cta.jsx";
 import Footer from "./components/Footer.jsx";
+import Demo from "./components/Demo.jsx";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 
           <HowItWorks />
           <Occasions />
+          <Demo />
           <Features />
           <Cta />
           <Footer />
