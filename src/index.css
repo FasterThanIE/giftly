@@ -286,6 +286,7 @@ footer .wrap {
 .gift h4 { font: 600 17px/1.3 var(--font-display); }
 .gift small { display: block; font-size: 13px; color: var(--muted); }
 .gift .price { font-size: 14px; color: var(--muted); }
+.gift .who { font-size: 13px; font-weight: 600; color: var(--sage); text-align: right; }
 
 .fund { background: var(--sage-tint); border-radius: var(--radius-lg); padding: 28px; }
 .fund h3 { font-size: 24px; margin: 8px 0; }
@@ -305,3 +306,8 @@ footer .wrap {
 @media (max-width: 860px) {
   .demo { grid-template-columns: 1fr; }
 }
+
+.tick svg { width: 16px; height: 16px; stroke: var(--on-rose); stroke-width: 2.5; fill: none; opacity: 0; }
+.gift.claimed .tick { background: var(--rose); border-color: var(--rose); }
+.gift.claimed .tick svg { opacity: 1; }
+.gift.claimed h4 { text-decoration: line-through; text-decoration-color: var(--muted); }
