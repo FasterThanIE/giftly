@@ -340,3 +340,44 @@ footer .wrap {
   .pitch h2 { font-size: 28px; margin-bottom: 6px; }
   .pitch p { font-size: 15px; }
 }
+
+.side { display: flex; flex-direction: column; padding: 28px 48px; }
+.top { display: flex; justify-content: flex-end; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
+.center { flex: 1; display: grid; place-items: center; padding: 32px 0; }
+.card { width: 100%; max-width: 420px; }
+
+@media (max-width: 900px) {
+  .side { padding: 16px 16px 32px; }
+  .top { position: absolute; top: 20px; right: 16px; }
+  .top span { display: none; }
+  .center { padding: 8px 0; }
+}
+
+.tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-pill); padding: 4px; margin-bottom: 28px; }
+.tabs button { border: 0; background: transparent; border-radius: var(--radius-pill); padding: 10px 0; font-weight: 600; font-size: 14px; color: var(--muted); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+
+.card .head h1 { font-size: 34px; line-height: 1.1; }
+.card .head p { color: var(--muted); margin: 8px 0 24px; }
+
+.card form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 14px; }
+.field .hint { font-size: 12px; color: var(--muted); }
+.inputwrap { position: relative; }
+.card input[type=email], .card input[type=password], .card input[type=text] {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--field); font-size: 15px; transition: border-color .15s;
+}
+.card input:hover { border-color: var(--muted); }
+.card input:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px var(--blush); }
+.card input::placeholder { color: var(--muted); opacity: .7; }
+.peekbtn { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; font-size: 13px; font-weight: 600; color: var(--muted); padding: 6px 10px; cursor: pointer; border-radius: 6px; }
+.rowline { display: flex; justify-content: space-between; align-items: center; font-size: 14px; gap: 12px; flex-wrap: wrap; }
+.check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--muted); cursor: pointer; }
+.check input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--rose); flex: none; }
+.primary { border: 0; border-radius: var(--radius-pill); background: var(--rose); color: var(--on-rose); padding: 14px 0; font-weight: 600; font-size: 15px; cursor: pointer; margin-top: 4px; }
+.primary:hover { filter: brightness(1.05); }
+.notice { font-size: 13px; color: var(--sage); font-weight: 600; min-height: 20px; margin: 0; }
+.switch { text-align: center; font-size: 14px; color: var(--muted); margin-top: 24px; }
+.switch button { border: 0; background: none; color: var(--rose); font-weight: 600; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
