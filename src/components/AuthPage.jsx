@@ -6,6 +6,7 @@ function AuthPage() {
 
     const [theme, setTheme] = useState("light");
     const [tab, setTab] = useState("login");
+    const [showPass, setShowPass ] = useState(false);
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
@@ -94,7 +95,7 @@ function AuthPage() {
 
                                         <div className="inputwrap">
                                             <input
-                                                type="password"
+                                                type={ showPass ? "text" : "password"}
                                                 id="password"
                                                 name="password"
                                             />
@@ -102,8 +103,11 @@ function AuthPage() {
                                             <button
                                                 className="peekbtn"
                                                 type="button"
+                                                onClick={() => setShowPass(!showPass)}
                                             >
-                                                Show
+                                                {showPass ? "Hide" : "Show"}
+
+
                                             </button>
                                         </div>
                                     </div>
@@ -139,7 +143,57 @@ function AuthPage() {
                             </>
 
                         ) :
-                            ( <p>Signup forma dolazi uskoro</p> )
+                            (
+                                <>
+                                    <div className="head">
+                                    <h1>Start your wish list</h1>
+                                        <p>Free to create. Takes about two minutes.</p>
+                                    </div>
+
+                                    <form noValidate>
+                                        <div className="field">
+                                            <label htmlFor="su_firstName">First name</label>
+                                                <input id="su_firstName" name="first_name" autoComplete="given-name" type="text" />
+                                        </div>
+                                        <div className="field">
+                                            <label htmlFor="su_lastName">Last name</label>
+                                            <input id="su_lastName" name="last_name" autoComplete="family-name" type="text" />
+                                        </div>
+                                        <div className="field">
+                                            <label htmlFor="su_email">Email</label>
+                                            <input id="su_email" name="email" autoComplete="email" type="email" />
+                                        </div>
+                                        <div className="field">
+                                            <label htmlFor="su_pass">Password</label>
+                                            <div className="inputwrap">
+                                                <input id="su_pass" placeholder="At least 8 characters" autoComplete="new-password" name="password"
+                                            type={ showPass ? "text" : "password"}
+                                            />
+                                                <button
+                                                className="peekbtn"
+                                                type="button"
+                                                onClick={() => setShowPass(!showPass)}
+                                            >
+                                                {showPass ? "Hide" : "Show"}
+                                            </button>
+                                            </div>
+                                        </div>
+
+                                        <label className="check">
+                                            <input type="checkbox" /><span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
+                                        </label>
+
+                                        <button className="primary" type="submit">Create account</button>
+                                        <p className="notice"></p>
+
+                                    </form>
+
+                                   <p className="switch">Already have an account?
+                                       <button type="button" onClick={() => setTab("login")}>Log in</button>
+                                   </p>
+                                </>
+
+                            )
 
                         }
 
