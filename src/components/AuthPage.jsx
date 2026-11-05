@@ -7,12 +7,19 @@ function AuthPage() {
     const [theme, setTheme] = useState("light");
     const [tab, setTab] = useState("login");
     const [showPass, setShowPass ] = useState(false);
+    const [signUpPass, setSignUpPass] = useState("");
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
         setTheme(newTheme);
         document.documentElement.setAttribute("data-theme", newTheme);
     };
+
+    let s = 0;
+    if (signUpPass.length >= 8) s++;
+    if (/\d/.test(signUpPass)) s++;
+    if (/[^A-Za-z0-9]/.test(signUpPass)) s++;
+    if (signUpPass.length >= 12 && /[A-Z]/.test(signUpPass) ) s++;
 
     return (
 
@@ -166,9 +173,10 @@ function AuthPage() {
                                         <div className="field">
                                             <label htmlFor="su_pass">Password</label>
                                             <div className="inputwrap">
-                                                <input id="su_pass" placeholder="At least 8 characters" autoComplete="new-password" name="password"
+                                                <input value={signUpPass} onChange={(e) => setSignUpPass(e.target.value)} id="su_pass" placeholder="At least 8 characters" autoComplete="new-password" name="password"
                                             type={ showPass ? "text" : "password"}
                                             />
+
                                                 <button
                                                 className="peekbtn"
                                                 type="button"
@@ -177,6 +185,11 @@ function AuthPage() {
                                                 {showPass ? "Hide" : "Show"}
                                             </button>
                                             </div>
+
+                                            <div className="meter" data-s={s}>
+                                            <span></span><span></span><span></span><span></span>
+                                        </div>
+                                        <span className="hint">{["Use 8+ characters with a number or symbol.", "Weak", "Okay", "Strong", "Very strong"][s]}</span>
                                         </div>
 
                                         <label className="check">

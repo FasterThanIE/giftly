@@ -383,3 +383,8 @@ footer .wrap {
 .notice { font-size: 13px; color: var(--sage); font-weight: 600; min-height: 20px; margin: 0; }
 .switch { text-align: center; font-size: 14px; color: var(--muted); margin-top: 24px; }
 .switch button { border: 0; background: none; color: var(--rose); font-weight: 600; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+
+.meter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 2px; }
+.meter span { height: 4px; border-radius: 2px; background: var(--line); transition: background .2s; }
+.meter[data-s="1"] span:nth-child(-n+1), .meter[data-s="2"] span:nth-child(-n+2) { background: var(--gold); }
+.meter[data-s="3"] span:nth-child(-n+3), .meter[data-s="4"] span { background: var(--sage); }
