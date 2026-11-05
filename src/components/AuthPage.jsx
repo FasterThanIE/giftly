@@ -8,12 +8,30 @@ function AuthPage() {
     const [tab, setTab] = useState("login");
     const [showPass, setShowPass ] = useState(false);
     const [signUpPass, setSignUpPass] = useState("");
+    const [loginEmail, setLoginEmail] = useState("");
+    const [loginPass, setLoginPass] = useState("");
+    const [loginError, setLoginError] = useState("");
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
         setTheme(newTheme);
         document.documentElement.setAttribute("data-theme", newTheme);
     };
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        if (!loginEmail || !loginPass) {
+            setLoginError("Please fill in all fields.")
+            return;
+        }
+
+        if (!/\S+@\S+\.\S+/.test(loginEmail)) {
+            setLoginError("Please enter a valid email.")
+            return;
+        }
+
+        setLoginError("")
+    }
 
     let s = 0;
     if (signUpPass.length >= 8) s++;
@@ -84,13 +102,14 @@ function AuthPage() {
                             </div>
 
 
-                                <form noValidate>
+                                <form noValidate onSubmit={handleLogin}>
                                     <div className="field">
                                         <label htmlFor="email">Email</label>
                                         <input
                                             type="email"
                                             id="email"
                                             name="email"
+                                            value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}
                                         />
                                     </div>
 
@@ -105,6 +124,7 @@ function AuthPage() {
                                                 type={ showPass ? "text" : "password"}
                                                 id="password"
                                                 name="password"
+                                                value={loginPass} onChange={(e) => setLoginPass(e.target.value)}
                                             />
 
                                             <button
@@ -134,7 +154,7 @@ function AuthPage() {
                                         Log in
                                     </button>
 
-                                    <p className="notice"></p>
+                                    <p className="notice">{loginError}</p>
 
                                 </form>
                                 <p className="switch">
