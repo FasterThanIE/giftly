@@ -1,16 +1,20 @@
-
-
 import {useState} from "react";
 
 function AuthPage() {
 
     const [theme, setTheme] = useState("light");
     const [tab, setTab] = useState("login");
-    const [showPass, setShowPass ] = useState(false);
-    const [signUpPass, setSignUpPass] = useState("");
+    const [showPass, setShowPass] = useState(false);
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPass, setLoginPass] = useState("");
     const [loginError, setLoginError] = useState("");
+
+    const [signUpPass, setSignUpPass] = useState("");
+    const [suFirst, setSuFirst] = useState("");
+    const [suLast, setSuLast] = useState("");
+    const [suEmail, setSuEmail] = useState("");
+    const [suTerms, setSuTerms] = useState(false);
+    const [signupError, setSignupError] = useState("");
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
@@ -21,23 +25,42 @@ function AuthPage() {
     const handleLogin = (e) => {
         e.preventDefault();
         if (!loginEmail || !loginPass) {
-            setLoginError("Please fill in all fields.")
+            setLoginError("Please fill in all fields.");
             return;
         }
-
         if (!/\S+@\S+\.\S+/.test(loginEmail)) {
-            setLoginError("Please enter a valid email.")
+            setLoginError("Please enter a valid email.");
             return;
         }
+        setLoginError("");
+    };
 
-        setLoginError("")
-    }
+    const handleSignUp = (e) => {
+        e.preventDefault();
+        if (!suFirst || !suLast || !suEmail || !signUpPass) {
+            setSignupError("Please fill in all fields.");
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(suEmail)) {
+            setSignupError("Please enter a valid email.");
+            return;
+        }
+        if (signUpPass.length < 8) {
+            setSignupError("Password must be at least 8 characters.");
+            return;
+        }
+        if (!suTerms) {
+            setSignupError("Please accept the Terms.");
+            return;
+        }
+        setSignupError("");
+    };
 
     let s = 0;
     if (signUpPass.length >= 8) s++;
     if (/\d/.test(signUpPass)) s++;
     if (/[^A-Za-z0-9]/.test(signUpPass)) s++;
-    if (signUpPass.length >= 12 && /[A-Z]/.test(signUpPass) ) s++;
+    if (signUpPass.length >= 12 && /[A-Z]/.test(signUpPass)) s++;
 
     return (
 
@@ -51,23 +74,21 @@ function AuthPage() {
                 </div>
 
                 <div className="peek">
-
                     <span className="ribbon"></span>
                     <span className="eyebrow">Ana & Luka · 12 June</span>
                     <h3>Our wedding wish list</h3>
                     <div className="row">
-                      <span>Stand mixer</span>
+                        <span>Stand mixer</span>
                         <span className="pill done">Claimed</span>
                     </div>
                     <div className="row">
-                      <span>Linen bedding set</span>
+                        <span>Linen bedding set</span>
                         <span className="pill">Available</span>
                     </div>
                     <div className="row">
-                      <span>Honeymoon fund</span>
+                        <span>Honeymoon fund</span>
                         <span className="pill done">€1,240 of €2,000</span>
                     </div>
-
                 </div>
 
                 <p className="quote"><b>Free for hosts.</b> Guests don't need an account to claim a gift.</p>
@@ -96,11 +117,10 @@ function AuthPage() {
 
                         {tab === "login" ? (
                             <>
-                            <div className="head">
-                                <h1>Welcome back</h1>
-                                <p>Log in to see who's claimed what.</p>
-                            </div>
-
+                                <div className="head">
+                                    <h1>Welcome back</h1>
+                                    <p>Log in to see who's claimed what.</p>
+                                </div>
 
                                 <form noValidate onSubmit={handleLogin}>
                                     <div className="field">
@@ -109,7 +129,8 @@ function AuthPage() {
                                             type="email"
                                             id="email"
                                             name="email"
-                                            value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)}
+                                            value={loginEmail}
+                                            onChange={(e) => setLoginEmail(e.target.value)}
                                         />
                                     </div>
 
@@ -118,120 +139,87 @@ function AuthPage() {
                                             <label htmlFor="password">Password</label>
                                             <a href="#">Forgot password?</a>
                                         </div>
-
                                         <div className="inputwrap">
                                             <input
-                                                type={ showPass ? "text" : "password"}
+                                                type={showPass ? "text" : "password"}
                                                 id="password"
                                                 name="password"
-                                                value={loginPass} onChange={(e) => setLoginPass(e.target.value)}
+                                                value={loginPass}
+                                                onChange={(e) => setLoginPass(e.target.value)}
                                             />
-
-                                            <button
-                                                className="peekbtn"
-                                                type="button"
-                                                onClick={() => setShowPass(!showPass)}
-                                            >
+                                            <button className="peekbtn" type="button" onClick={() => setShowPass(!showPass)}>
                                                 {showPass ? "Hide" : "Show"}
-
-
                                             </button>
                                         </div>
                                     </div>
 
                                     <label className="check">
-                                        <input
-                                            type="checkbox"
-                                            defaultChecked
-                                        />
+                                        <input type="checkbox" defaultChecked />
                                         Keep me logged in
                                     </label>
 
-                                    <button
-                                        className="primary"
-                                        type="submit"
-                                    >
-                                        Log in
-                                    </button>
-
+                                    <button className="primary" type="submit">Log in</button>
                                     <p className="notice">{loginError}</p>
-
                                 </form>
                                 <p className="switch">
                                     Don't have an account?{" "}
-                                    <button
-                                        type="button"
-                                        onClick={() => setTab("signup")}
-                                    >
-                                        Create one
-                                    </button>
+                                    <button type="button" onClick={() => setTab("signup")}>Create one</button>
                                 </p>
-
                             </>
-
-                        ) :
-                            (
-                                <>
-                                    <div className="head">
+                        ) : (
+                            <>
+                                <div className="head">
                                     <h1>Start your wish list</h1>
-                                        <p>Free to create. Takes about two minutes.</p>
+                                    <p>Free to create. Takes about two minutes.</p>
+                                </div>
+
+                                <form noValidate onSubmit={handleSignUp}>
+                                    <div className="field">
+                                        <label htmlFor="su_firstName">First name</label>
+                                        <input id="su_firstName" name="first_name" value={suFirst} onChange={(e) => setSuFirst(e.target.value)} autoComplete="given-name" type="text" />
                                     </div>
-
-                                    <form noValidate>
-                                        <div className="field">
-                                            <label htmlFor="su_firstName">First name</label>
-                                                <input id="su_firstName" name="first_name" autoComplete="given-name" type="text" />
-                                        </div>
-                                        <div className="field">
-                                            <label htmlFor="su_lastName">Last name</label>
-                                            <input id="su_lastName" name="last_name" autoComplete="family-name" type="text" />
-                                        </div>
-                                        <div className="field">
-                                            <label htmlFor="su_email">Email</label>
-                                            <input id="su_email" name="email" autoComplete="email" type="email" />
-                                        </div>
-                                        <div className="field">
-                                            <label htmlFor="su_pass">Password</label>
-                                            <div className="inputwrap">
-                                                <input value={signUpPass} onChange={(e) => setSignUpPass(e.target.value)} id="su_pass" placeholder="At least 8 characters" autoComplete="new-password" name="password"
-                                            type={ showPass ? "text" : "password"}
+                                    <div className="field">
+                                        <label htmlFor="su_lastName">Last name</label>
+                                        <input id="su_lastName" name="last_name" value={suLast} onChange={(e) => setSuLast(e.target.value)} autoComplete="family-name" type="text" />
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="su_email">Email</label>
+                                        <input id="su_email" name="email" value={suEmail} onChange={(e) => setSuEmail(e.target.value)} autoComplete="email" type="email" />
+                                    </div>
+                                    <div className="field">
+                                        <label htmlFor="su_pass">Password</label>
+                                        <div className="inputwrap">
+                                            <input
+                                                value={signUpPass}
+                                                onChange={(e) => setSignUpPass(e.target.value)}
+                                                id="su_pass"
+                                                placeholder="At least 8 characters"
+                                                autoComplete="new-password"
+                                                name="password"
+                                                type={showPass ? "text" : "password"}
                                             />
-
-                                                <button
-                                                className="peekbtn"
-                                                type="button"
-                                                onClick={() => setShowPass(!showPass)}
-                                            >
+                                            <button className="peekbtn" type="button" onClick={() => setShowPass(!showPass)}>
                                                 {showPass ? "Hide" : "Show"}
                                             </button>
-                                            </div>
-
-                                            <div className="meter" data-s={s}>
+                                        </div>
+                                        <div className="meter" data-s={s}>
                                             <span></span><span></span><span></span><span></span>
                                         </div>
                                         <span className="hint">{["Use 8+ characters with a number or symbol.", "Weak", "Okay", "Strong", "Very strong"][s]}</span>
-                                        </div>
+                                    </div>
 
-                                        <label className="check">
-                                            <input type="checkbox" /><span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
-                                        </label>
+                                    <label className="check">
+                                        <input type="checkbox" checked={suTerms} onChange={(e) => setSuTerms(e.target.checked)} /><span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
+                                    </label>
 
-                                        <button className="primary" type="submit">Create account</button>
-                                        <p className="notice"></p>
-
-                                    </form>
-
-                                   <p className="switch">Already have an account?
-                                       <button type="button" onClick={() => setTab("login")}>Log in</button>
-                                   </p>
-                                </>
-
-                            )
-
-                        }
-
-
-
+                                    <button className="primary" type="submit">Create account</button>
+                                    <p className="notice">{signupError}</p>
+                                </form>
+                                <p className="switch">Already have an account?{" "}
+                                    <button type="button" onClick={() => setTab("login")}>Log in</button>
+                                </p>
+                            </>
+                        )}
 
                     </div>
                 </div>
@@ -240,10 +228,7 @@ function AuthPage() {
 
         </div>
 
-
     )
-
 }
-
 
 export default AuthPage;
