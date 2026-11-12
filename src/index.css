@@ -388,3 +388,31 @@ footer .wrap {
 .meter span { height: 4px; border-radius: 2px; background: var(--line); transition: background .2s; }
 .meter[data-s="1"] span:nth-child(-n+1), .meter[data-s="2"] span:nth-child(-n+2) { background: var(--gold); }
 .meter[data-s="3"] span:nth-child(-n+3), .meter[data-s="4"] span { background: var(--sage); }
+
+.authwrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.authwrap .card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--field);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  padding: 36px 32px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.authwrap .head {
+  text-align: center;
+}
+
+[data-theme="dark"] .authwrap .card {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}

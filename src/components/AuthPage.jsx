@@ -1,9 +1,9 @@
 import {useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 function AuthPage() {
 
     const [theme, setTheme] = useState("light");
-    const [tab, setTab] = useState("login");
     const [showPass, setShowPass] = useState(false);
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPass, setLoginPass] = useState("");
@@ -15,6 +15,11 @@ function AuthPage() {
     const [suEmail, setSuEmail] = useState("");
     const [suTerms, setSuTerms] = useState(false);
     const [signupError, setSignupError] = useState("");
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const tab = (location.pathname === "/signup" ? "signup" : "login")
 
     const toggleTheme = () => {
         const newTheme = theme === "light" ? "dark" : "light";
@@ -111,8 +116,8 @@ function AuthPage() {
                 <div className="center">
                     <div className="card">
                         <div className="tabs" role="tablist">
-                            <button role="tab" aria-selected={tab === "login"} onClick={() => setTab("login")}>Log in</button>
-                            <button role="tab" aria-selected={tab === "signup"} onClick={() => setTab("signup")}>Create account</button>
+                            <button role="tab" aria-selected={tab === "login"} onClick={() => navigate("/login")}>Log in</button>
+                            <button role="tab" aria-selected={tab === "signup"} onClick={() => navigate("/signup")}>Create account</button>
                         </div>
 
                         {tab === "login" ? (
@@ -137,7 +142,7 @@ function AuthPage() {
                                     <div className="field">
                                         <div className="rowline">
                                             <label htmlFor="password">Password</label>
-                                            <a href="#">Forgot password?</a>
+                                            <Link to="/forgot">Forgot password?</Link>
                                         </div>
                                         <div className="inputwrap">
                                             <input
@@ -163,7 +168,7 @@ function AuthPage() {
                                 </form>
                                 <p className="switch">
                                     Don't have an account?{" "}
-                                    <button type="button" onClick={() => setTab("signup")}>Create one</button>
+                                    <button type="button" onClick={() => navigate("/signup")}>Create one</button>
                                 </p>
                             </>
                         ) : (
@@ -216,7 +221,7 @@ function AuthPage() {
                                     <p className="notice">{signupError}</p>
                                 </form>
                                 <p className="switch">Already have an account?{" "}
-                                    <button type="button" onClick={() => setTab("login")}>Log in</button>
+                                    <button type="button" onClick={() => navigate("/login")}>Log in</button>
                                 </p>
                             </>
                         )}
