@@ -7,6 +7,7 @@ import Cta from "./components/Cta.jsx";
 import Footer from "./components/Footer.jsx";
 import Demo from "./components/Demo.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
+import Reset from "./components/Reset.jsx";
 import AuthPage from "./components/AuthPage.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 
@@ -33,10 +34,8 @@ function App() {
              <Route path="/login" element={< AuthPage/>} />
              <Route path="/" element={<Navigate to="/login"/>} />
              <Route path="/signup" element={<AuthPage/>} />
-         </Routes>
-
-         <Routes>
-             <Route path="/forgot" element={<ForgotPassword/>} />
+             <Route path="/forgot" element={<ForgotPassword />} />
+             <Route path="/reset" element={<Reset />} />
          </Routes>
 
 
