@@ -10,7 +10,7 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import Reset from "./components/Reset.jsx";
 import AuthPage from "./components/AuthPage.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
-
+import Dashboard from "./components/Dashboard.jsx";
 
 function App() {
 
@@ -36,6 +36,7 @@ function App() {
              <Route path="/signup" element={<AuthPage/>} />
              <Route path="/forgot" element={<ForgotPassword />} />
              <Route path="/reset" element={<Reset />} />
+             <Route path="/dashboard" element={<Dashboard />} />
          </Routes>
 
 

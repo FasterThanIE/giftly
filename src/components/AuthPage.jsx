@@ -16,6 +16,9 @@ function AuthPage() {
     const [suTerms, setSuTerms] = useState(false);
     const [signupError, setSignupError] = useState("");
 
+    const [loading, setLoading] = useState(false);
+    const [remember, setRemember] = useState(true);
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -27,7 +30,7 @@ function AuthPage() {
         document.documentElement.setAttribute("data-theme", newTheme);
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         if (!loginEmail || !loginPass) {
             setLoginError("Please fill in all fields.");
@@ -37,7 +40,35 @@ function AuthPage() {
             setLoginError("Please enter a valid email.");
             return;
         }
+
         setLoginError("");
+        setLoading(true);
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email: loginEmail, password: loginPass}),
+
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setLoginError(data.error || "Login failed");
+                return;
+            }
+
+            const storage = remember ? localStorage : sessionStorage;
+            storage.setItem("token", data.token);
+
+            navigate("/dashboard");
+
+        } catch (err) {
+            setLoginError("Network error. Please try again");
+        }finally {
+            setLoading(false);
+        }
     };
 
     const handleSignUp = (e) => {
@@ -159,11 +190,13 @@ function AuthPage() {
                                     </div>
 
                                     <label className="check">
-                                        <input type="checkbox" defaultChecked />
+                                        <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
                                         Keep me logged in
                                     </label>
 
-                                    <button className="primary" type="submit">Log in</button>
+                                    <button className="primary" type="submit" disabled={loading}>
+                                        {loading ? "Logging in..." : "Log in"}
+                                    </button>
                                     <p className="notice">{loginError}</p>
                                 </form>
                                 <p className="switch">
