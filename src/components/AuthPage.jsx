@@ -19,6 +19,8 @@ function AuthPage() {
     const [loading, setLoading] = useState(false);
     const [remember, setRemember] = useState(true);
 
+    const [suLoading, setSuLoading] = useState(false);
+
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -66,12 +68,12 @@ function AuthPage() {
 
         } catch (err) {
             setLoginError("Network error. Please try again");
-        }finally {
+        } finally {
             setLoading(false);
         }
     };
 
-    const handleSignUp = (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         if (!suFirst || !suLast || !suEmail || !signUpPass) {
             setSignupError("Please fill in all fields.");
@@ -89,7 +91,56 @@ function AuthPage() {
             setSignupError("Please accept the Terms.");
             return;
         }
+
+        setSuLoading(true);
         setSignupError("");
+
+        try {
+
+
+            const registerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({first_name: suFirst, last_name: suLast, email: suEmail, password: signUpPass})
+
+            });
+
+            const registerData = await registerRes.json();
+
+            if (registerRes.status === 409) {
+                setSignupError("An account with this email already exists.")
+                return;
+            }
+
+            if (!registerRes.ok) {
+                setSignupError(registerData.error || "Signup failed");
+                return;
+            }
+
+
+            const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email: suEmail, password: signUpPass})
+            })
+            const loginData = await loginRes.json()
+
+            if (!loginRes.ok) {
+                setSignupError("Account created — please log in")
+                return;
+
+            }
+
+            localStorage.setItem("token", loginData.token)
+
+            navigate("/dashboard");
+
+        } catch (error) {
+            setSignupError("Network error. Please try again");
+        } finally {
+            setSuLoading(false);
+        }
+
     };
 
     let s = 0;
@@ -97,6 +148,7 @@ function AuthPage() {
     if (/\d/.test(signUpPass)) s++;
     if (/[^A-Za-z0-9]/.test(signUpPass)) s++;
     if (signUpPass.length >= 12 && /[A-Z]/.test(signUpPass)) s++;
+
 
     return (
 
@@ -106,7 +158,8 @@ function AuthPage() {
                 <a className="logo" href="#"><i></i>Giftly</a>
                 <div className="pitch">
                     <h2>The gifts you’d love, <em>none twice.</em></h2>
-                    <p>Make a wish list for your wedding, baby or birthday. Guests claim a gift or chip in to a fund.</p>
+                    <p>Make a wish list for your wedding, baby or birthday. Guests claim a gift or chip in to a
+                        fund.</p>
                 </div>
 
                 <div className="peek">
@@ -137,9 +190,15 @@ function AuthPage() {
                     <span>New to Giftly?</span>
                     <button className="theme" type="button" onClick={toggleTheme} aria-label="Switch theme">
                         {theme === "light" ? (
-                            <svg className="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+                            <svg className="moon" viewBox="0 0 24 24">
+                                <path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/>
+                            </svg>
                         ) : (
-                            <svg className="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                            <svg className="sun" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="4"/>
+                                <path
+                                    d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+                            </svg>
                         )}
                     </button>
                 </div>
@@ -147,8 +206,12 @@ function AuthPage() {
                 <div className="center">
                     <div className="card">
                         <div className="tabs" role="tablist">
-                            <button role="tab" aria-selected={tab === "login"} onClick={() => navigate("/login")}>Log in</button>
-                            <button role="tab" aria-selected={tab === "signup"} onClick={() => navigate("/signup")}>Create account</button>
+                            <button role="tab" aria-selected={tab === "login"} onClick={() => navigate("/login")}>Log
+                                in
+                            </button>
+                            <button role="tab" aria-selected={tab === "signup"}
+                                    onClick={() => navigate("/signup")}>Create account
+                            </button>
                         </div>
 
                         {tab === "login" ? (
@@ -183,14 +246,16 @@ function AuthPage() {
                                                 value={loginPass}
                                                 onChange={(e) => setLoginPass(e.target.value)}
                                             />
-                                            <button className="peekbtn" type="button" onClick={() => setShowPass(!showPass)}>
+                                            <button className="peekbtn" type="button"
+                                                    onClick={() => setShowPass(!showPass)}>
                                                 {showPass ? "Hide" : "Show"}
                                             </button>
                                         </div>
                                     </div>
 
                                     <label className="check">
-                                        <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+                                        <input type="checkbox" checked={remember}
+                                               onChange={(e) => setRemember(e.target.checked)}/>
                                         Keep me logged in
                                     </label>
 
@@ -214,15 +279,21 @@ function AuthPage() {
                                 <form noValidate onSubmit={handleSignUp}>
                                     <div className="field">
                                         <label htmlFor="su_firstName">First name</label>
-                                        <input id="su_firstName" name="first_name" value={suFirst} onChange={(e) => setSuFirst(e.target.value)} autoComplete="given-name" type="text" />
+                                        <input id="su_firstName" name="first_name" value={suFirst}
+                                               onChange={(e) => setSuFirst(e.target.value)} autoComplete="given-name"
+                                               type="text"/>
                                     </div>
                                     <div className="field">
                                         <label htmlFor="su_lastName">Last name</label>
-                                        <input id="su_lastName" name="last_name" value={suLast} onChange={(e) => setSuLast(e.target.value)} autoComplete="family-name" type="text" />
+                                        <input id="su_lastName" name="last_name" value={suLast}
+                                               onChange={(e) => setSuLast(e.target.value)} autoComplete="family-name"
+                                               type="text"/>
                                     </div>
                                     <div className="field">
                                         <label htmlFor="su_email">Email</label>
-                                        <input id="su_email" name="email" value={suEmail} onChange={(e) => setSuEmail(e.target.value)} autoComplete="email" type="email" />
+                                        <input id="su_email" name="email" value={suEmail}
+                                               onChange={(e) => setSuEmail(e.target.value)} autoComplete="email"
+                                               type="email"/>
                                     </div>
                                     <div className="field">
                                         <label htmlFor="su_pass">Password</label>
@@ -236,21 +307,27 @@ function AuthPage() {
                                                 name="password"
                                                 type={showPass ? "text" : "password"}
                                             />
-                                            <button className="peekbtn" type="button" onClick={() => setShowPass(!showPass)}>
+                                            <button className="peekbtn" type="button"
+                                                    onClick={() => setShowPass(!showPass)}>
                                                 {showPass ? "Hide" : "Show"}
                                             </button>
                                         </div>
                                         <div className="meter" data-s={s}>
                                             <span></span><span></span><span></span><span></span>
                                         </div>
-                                        <span className="hint">{["Use 8+ characters with a number or symbol.", "Weak", "Okay", "Strong", "Very strong"][s]}</span>
+                                        <span
+                                            className="hint">{["Use 8+ characters with a number or symbol.", "Weak", "Okay", "Strong", "Very strong"][s]}</span>
                                     </div>
 
                                     <label className="check">
-                                        <input type="checkbox" checked={suTerms} onChange={(e) => setSuTerms(e.target.checked)} /><span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
+                                        <input type="checkbox" checked={suTerms}
+                                               onChange={(e) => setSuTerms(e.target.checked)}/><span>I agree to the <a
+                                        href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
                                     </label>
 
-                                    <button className="primary" type="submit">Create account</button>
+                                    <button className="primary" disabled={suLoading}
+                                            type="submit">{suLoading ? "Creating account..." : "Create account"}
+                                    </button>
                                     <p className="notice">{signupError}</p>
                                 </form>
                                 <p className="switch">Already have an account?{" "}
