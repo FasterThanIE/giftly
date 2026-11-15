@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {loginUser} from "../api/auth";
+import {loginUser, registerUser} from "../api/auth";
 
 function AuthPage() {
 
@@ -92,22 +92,18 @@ function AuthPage() {
 
         try {
 
+            const {
+                ok: registerOk,
+                data: registerData,
+                status
+            } = await registerUser(suFirst, suLast, suEmail, signUpPass);
 
-            const registerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({first_name: suFirst, last_name: suLast, email: suEmail, password: signUpPass})
-
-            });
-
-            const registerData = await registerRes.json();
-
-            if (registerRes.status === 409) {
+            if (status === 409) {
                 setSignupError("An account with this email already exists.")
                 return;
             }
 
-            if (!registerRes.ok) {
+            if (!registerOk) {
                 setSignupError(registerData.error || "Signup failed");
                 return;
             }
