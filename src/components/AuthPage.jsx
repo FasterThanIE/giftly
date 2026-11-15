@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
+import {loginUser} from "../api/auth";
 
 function AuthPage() {
 
@@ -47,16 +48,10 @@ function AuthPage() {
         setLoading(true);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email: loginEmail, password: loginPass}),
 
-            });
+            const {ok, data} = await loginUser(loginEmail, loginPass);
 
-            const data = await res.json();
-
-            if (!res.ok) {
+            if (!ok) {
                 setLoginError(data.error || "Login failed");
                 return;
             }
@@ -118,14 +113,9 @@ function AuthPage() {
             }
 
 
-            const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email: suEmail, password: signUpPass})
-            })
-            const loginData = await loginRes.json()
+            const {ok: loginOk, data: loginData} = await loginUser(suEmail, signUpPass);
 
-            if (!loginRes.ok) {
+            if (!loginOk) {
                 setSignupError("Account created — please log in")
                 return;
 
