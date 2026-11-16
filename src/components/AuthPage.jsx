@@ -93,9 +93,7 @@ function AuthPage() {
         try {
 
             const {
-                ok: registerOk,
-                data: registerData,
-                status
+                ok: registerOk, data: registerData, status
             } = await registerUser(suFirst, suLast, suEmail, signUpPass);
 
             if (status === 409) {

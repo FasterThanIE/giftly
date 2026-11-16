@@ -24,3 +24,17 @@ export async function registerUser(firstName, lastName, email, password) {
     const data = await response.json();
     return {ok: response.ok, data, status: response.status};
 }
+
+
+
+export async function getMe(token) {
+
+    const response = await fetch(`${API_URL}/api/users/me`, {
+        method: 'GET',
+        headers: {Authorization: `Bearer ${token}`, },
+    })
+
+    const data = await response.json();
+    return  {ok: response.ok, status: response.status, data }
+
+}

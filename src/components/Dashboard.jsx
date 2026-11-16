@@ -1,4 +1,4 @@
-
+import {getMe} from "../api/auth.js";
 import {useEffect, useState} from "react";
 
 
@@ -13,12 +13,11 @@ function Dashboard() {
         const loadUser = async () => {
             const token = localStorage.getItem("token") || sessionStorage.getItem("token");
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/me`, {
-                    method: "GET",
-                    headers: {"Authorization": `Bearer ${token}`}
-                });
-                const data = await res.json();
-                if (res.ok) {
+
+                const { ok , data } = await getMe(token);
+
+
+                if (ok) {
                     setUser(data.user);
                 }
                 console.log(data.user);
