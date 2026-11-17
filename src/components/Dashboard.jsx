@@ -1,6 +1,7 @@
 import {getMe, logoutUser} from "../api/auth.js";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {getToken, clearToken} from "../utils/token.js";
 
 
 
@@ -13,10 +14,16 @@ function Dashboard() {
 
     useEffect(() => {
         const loadUser = async () => {
-            const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+            const token = getToken();
             try {
 
-                const { ok , data } = await getMe(token);
+                const { ok , status, data } = await getMe(token);
+
+                if (status === 401 || status === 403) {
+                    clearToken();
+                    navigate("/login");
+                    return;
+                }
 
 
                 if (ok) {
@@ -32,7 +39,7 @@ function Dashboard() {
     }, []);
 
     async function handleLogout() {
-        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        const token = getToken();
        try{
             await logoutUser(token)
 
@@ -41,8 +48,7 @@ function Dashboard() {
        }catch (error) {
            console.log(error);
        }finally {
-           localStorage.removeItem("token");
-           sessionStorage.removeItem("token");
+          clearToken();
 
            navigate("/login");
        }

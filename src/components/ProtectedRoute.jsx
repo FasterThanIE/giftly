@@ -1,8 +1,9 @@
 import {Navigate} from "react-router-dom";
+import {getToken} from "../utils/token.js";
 
 function ProtectedRoute({children}) {
 
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token = getToken();
 
 
     if (!token) {
