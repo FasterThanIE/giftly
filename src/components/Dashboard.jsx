@@ -1,5 +1,6 @@
-import {getMe} from "../api/auth.js";
+import {getMe, logoutUser} from "../api/auth.js";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -8,6 +9,7 @@ import {useEffect, useState} from "react";
 function Dashboard() {
 
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadUser = async () => {
@@ -29,10 +31,32 @@ function Dashboard() {
         loadUser();
     }, []);
 
+    async function handleLogout() {
+        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+       try{
+            await logoutUser(token)
+
+
+
+       }catch (error) {
+           console.log(error);
+       }finally {
+           localStorage.removeItem("token");
+           sessionStorage.removeItem("token");
+
+           navigate("/login");
+       }
+
+    }
+
    return (
        <div>
            {user ? <h1>Welcome {user.firstName} </h1> : <p>Loading...</p> }
+           <button className="primary" onClick={handleLogout}>Log out</button>
+
        </div>
+
+
 
    )
 }

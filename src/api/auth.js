@@ -38,3 +38,16 @@ export async function getMe(token) {
     return  {ok: response.ok, status: response.status, data }
 
 }
+
+
+export async function logoutUser(token) {
+
+    const response = await fetch(`${API_URL}/api/auth/logout`, {
+        method: 'POST',
+        headers: {Authorization: `Bearer ${token}`, },
+    })
+
+    const data = await response.json();
+    return {ok: response.ok, data};
+
+}
