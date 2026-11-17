@@ -11,6 +11,7 @@ import Reset from "./components/Reset.jsx";
 import AuthPage from "./components/AuthPage.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Dashboard from "./components/Dashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
              <Route path="/signup" element={<AuthPage/>} />
              <Route path="/forgot" element={<ForgotPassword />} />
              <Route path="/reset" element={<Reset />} />
-             <Route path="/dashboard" element={<Dashboard />} />
+             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
          </Routes>
 
 
