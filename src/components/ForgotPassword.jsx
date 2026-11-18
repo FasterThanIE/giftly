@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { forgotPassword } from "../api/auth.js";
 
 function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
+    const [loading , setLoading] = useState(false);
+    const [message, setMessage] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email) {
             setError("Please enter your email.");
@@ -16,6 +19,24 @@ function ForgotPassword() {
             return;
         }
         setError("");
+        setMessage("");
+        setLoading(true);
+
+        try{
+
+            const { ok, data } = await forgotPassword(email);
+
+            if (ok) {
+                setMessage(data.message);
+            } else{
+                setError(data.error || "Something went wrong.");
+            }
+
+        } catch (err) {
+            setError("Network error. Please try again.");
+        } finally {
+            setLoading(false);
+        }
 
     };
 
@@ -40,8 +61,11 @@ function ForgotPassword() {
                     />
                 </div>
 
-                <button className="primary" type="submit">Send reset link</button>
+                <button className="primary" type="submit" disabled={loading}>
+                    {loading ? "Sending..." : "Send reset link"}
+                </button>
                 <p className="notice">{error}</p>
+                <p className="notice">{message}</p>
             </form>
 
             <p className="switch">

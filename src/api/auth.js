@@ -51,3 +51,15 @@ export async function logoutUser(token) {
     return {ok: response.ok, data};
 
 }
+
+
+export async function forgotPassword(email) {
+
+    const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email: email}),
+    })
+    const data = await response.json();
+    return {ok: response.ok, data}
+}
