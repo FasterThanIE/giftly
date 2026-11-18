@@ -1,5 +1,6 @@
 
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 function Nav () {
 
@@ -27,7 +28,7 @@ function Nav () {
                         <svg className="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
                     )}
                 </button>
-                <a className="btn btn-primary" href="#start">Create a list</a>
+                <Link to="/signup" className="btn btn-primary">Create a list</Link>
 
             </div>
 

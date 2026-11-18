@@ -1,34 +1,29 @@
-import Hero from "./components/Hero.jsx";
-import Nav from "./components/Nav.jsx";
-import HowItWorks from "./components/HowItWorks.jsx";
-import Occasions from "./components/Occasions.jsx";
-import Features from "./components/Features.jsx";
-import Cta from "./components/Cta.jsx";
-import Footer from "./components/Footer.jsx";
-import Demo from "./components/Demo.jsx";
-
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home.jsx";
+import AuthPage from "./components/AuthPage.jsx";
+import ForgotPassword from "./components/ForgotPassword.jsx";
+import Reset from "./components/Reset.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
-
-
-  return (
-      <>
-
-          <div className="wrap">
-              <Nav />
-              <Hero />
-          </div>
-
-          <HowItWorks />
-          <Occasions />
-          <Demo />
-          <Features />
-          <Cta />
-          <Footer />
-
-      </>
-
-  )
+    return (
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/signup" element={<AuthPage />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
+            <Route path="/reset" element={<Reset />} />
+            <Route
+                path="/dashboard"
+                element={
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+        </Routes>
+    );
 }
 
-export default App
+export default App;
