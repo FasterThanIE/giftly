@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 
 
 function Hero() {
@@ -9,7 +10,7 @@ function Hero() {
                 <h1>Wish for it. <br/>Let your people <em>tick it off.</em></h1>
                 <p className="lead">Make a list of the gifts you'd love for your wedding, baby shower or birthday. Guests claim what they'll bring, so nothing gets bought twice — or they chip in to a cash fund.</p>
                 <div className="ctas">
-                    <a href="#start" className="btn btn-primary">Start your wish list</a>
+                    <Link to="/signup" className="btn btn-primary">Create a list</Link>
                     <a href="#demo" className="btn btn-ghost">See an example</a>
 
                 </div>
