@@ -63,3 +63,16 @@ export async function forgotPassword(email) {
     const data = await response.json();
     return {ok: response.ok, data}
 }
+
+
+export async  function resetPassword(token, newPassword ) {
+
+    const response  = await fetch(`${API_URL}/api/auth/reset-password`, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`, },
+        body: JSON.stringify({newPassword}),
+    })
+
+    const data = await response.json();
+    return{ ok: response.ok, status: response.status, data}
+}

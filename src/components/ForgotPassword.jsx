@@ -32,7 +32,7 @@ function ForgotPassword() {
                 setError(data.error || "Something went wrong.");
             }
 
-        } catch (err) {
+        } catch  {
             setError("Network error. Please try again.");
         } finally {
             setLoading(false);
